@@ -1,7 +1,7 @@
 locals { #example : fill your information
-  github_token = "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"
+  github_token = "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"
   github_owner = "ayyajs"
-  github_repo = "ecs-nodejs-app-example"
+  github_repo = "ecs-bbb-html-pipeline"
   github_branch = "master"
 }
 
@@ -138,7 +138,7 @@ resource "aws_iam_role_policy" "pipeline" {
   policy = "${data.aws_iam_policy_document.pipeline.json}"
 }
 
-resource "aws_codepipeline" "this" {
+resource "aws_codepipeline" "codepipeline" {
   name = "${var.service_name}-pipeline"
   role_arn = "${aws_iam_role.pipeline.arn}"
 
@@ -153,17 +153,24 @@ resource "aws_codepipeline" "this" {
     action {
       name = "Source"
       category = "Source"
-      owner = "ThirdParty"
-      provider = "GitHub"
+      owner = "AWS"
+      provider = "CodeStarSourceConnection"
       version = "1"
       output_artifacts = ["SourceArtifact"]
 
+      # configuration = {
+      #   OAuthToken = "${local.github_token}"
+      #   Owner = "${local.github_owner}"
+      #   Repo = "${local.github_repo}"
+      #   Branch = "${local.github_branch}"
+      # }
+
       configuration = {
-        OAuthToken = "${local.github_token}"
-        Owner = "${local.github_owner}"
-        Repo = "${local.github_repo}"
-        Branch = "${local.github_branch}"
+        ConnectionArn    = var.codestar_connection_arn
+        FullRepositoryId = "ayyajs/ecs-bbb-html-pipeline"
+        BranchName       = "${local.github_branch}"
       }
+
     }
   }
 

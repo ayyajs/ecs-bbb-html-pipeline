@@ -31,3 +31,6 @@ variable "container_port" {
 variable "memory_reserv" {
   default = 100
 }
+variable "codestar_connection_arn" {
+  default = "arn:aws:codestar-connections:us-west-2:072324354363:connection/4d58e84f-144c-47be-9377-d279e29be69a"
+}
