@@ -1,5 +1,5 @@
 locals { #example : fill your information
-  github_token = "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"
+  github_token = "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"
   github_owner = "ayyajs"
   github_repo = "ecs-bbb-html-pipeline"
   github_branch = "master"
@@ -153,24 +153,17 @@ resource "aws_codepipeline" "codepipeline" {
     action {
       name = "Source"
       category = "Source"
-      owner = "AWS"
-      provider = "CodeStarSourceConnection"
+      owner = "ThirdParty"
+      provider = "GitHub"
       version = "1"
       output_artifacts = ["SourceArtifact"]
 
-      # configuration = {
-      #   OAuthToken = "${local.github_token}"
-      #   Owner = "${local.github_owner}"
-      #   Repo = "${local.github_repo}"
-      #   Branch = "${local.github_branch}"
-      # }
-
       configuration = {
-        ConnectionArn    = var.codestar_connection_arn
-        FullRepositoryId = "ayyajs/ecs-bbb-html-pipeline"
-        BranchName       = "${local.github_branch}"
+        OAuthToken = "${local.github_token}"
+        Owner = "${local.github_owner}"
+        Repo = "${local.github_repo}"
+        Branch = "${local.github_branch}"
       }
-
     }
   }
 
